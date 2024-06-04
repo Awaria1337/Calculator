@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="history" class="history"></div>
+    <div id="history-container">
+        <div id="history" class="history"></div>
+        <button id="delete-all" class="delete-all" onclick="deleteAllHistory()">Delete All</button>
+    </div>
     <div class="calculator">
         <textarea type="text" id="display" readonly></textarea>
         <div class="buttons">
