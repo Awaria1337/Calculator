@@ -1,0 +1,126 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.calculator-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.calculator {
+    background-color: #000;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    width: 320px;
+    border: 1px solid #dee0ea;
+    position: relative;
+    left: 150px;
+    bottom: 10px;
+}
+
+#display {
+    width: 300px;
+    height: 70px;
+    font-size: 2.5em;
+    text-align: right;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #000;
+    color: white;
+    resize: none;
+    overflow-y: auto;
+}
+
+#display::-webkit-scrollbar {
+    width: 6px;
+}
+
+#display::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 10px;
+}
+
+#display::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    height: 70px;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 35px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+button.operator {
+    background-color: #ff9500;
+    color: white;
+}
+
+button.double {
+    grid-column: span 2;
+    width: 150px;
+    text-align: left;
+    padding-left: 30px;
+}
+
+button:hover {
+    background-color: #666;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+button.operator:hover {
+    background-color: #cc7a00;
+}
+
+button.top-row {
+    background-color: #a5a5a5;
+    color: black;
+}
+
+.history {
+    background-color: #dee0ea;
+    width: 300px;
+    height: 520px;
+    border-radius: 15px;
+    overflow-y: auto;
+    padding: 10px;
+    position: relative;
+    bottom: 10px;
+}
+
+.history p {
+    margin: 5px 0;
+    color: black;
+    font-size: 1.2em;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    text-wrap: balance;
+}
+
+.delete-icon {
+    cursor: pointer;
+    color: red;
+    margin-left: 10px;
+}
