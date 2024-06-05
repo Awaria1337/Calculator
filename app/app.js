@@ -2,6 +2,7 @@ const history = JSON.parse(localStorage.getItem("history")) || [];
 
 function updateDisplay(value) {
   const display = document.getElementById("display");
+
   display.value = value;
   adjustFontSize(display);
 }
@@ -9,42 +10,60 @@ function updateDisplay(value) {
 function addToHistory(expression) {
   history.push(expression);
   localStorage.setItem("history", JSON.stringify(history));
-  renderHistory();
+  renderHistory();  
 }
 
 function renderHistory() {
   const historyElement = document.getElementById("history");
   historyElement.innerHTML = "";
   history.forEach((expression, index) => {
+    const container = document.createElement("div");
+    container.className = "history-item";
+    const textContainer = document.createElement("div");
+    textContainer.className = "text-container";
     const p = document.createElement("p");
     p.textContent = expression;
+    textContainer.appendChild(p);
+    const deleteIconContainer = document.createElement("div");
+    deleteIconContainer.className = "delete-icon-container";
     const deleteIcon = document.createElement("span");
     deleteIcon.textContent = "x";
     deleteIcon.className = "delete-icon";
     deleteIcon.onclick = () => deleteHistoryItem(index);
-    p.appendChild(deleteIcon);
-
-    historyElement.appendChild(p);
+    deleteIconContainer.appendChild(deleteIcon);
+    container.appendChild(textContainer);
+    container.appendChild(deleteIconContainer);
+    historyElement.appendChild(container);
+    const separator = document.createElement("div");
+    separator.className = "separator";
+    historyElement.appendChild(separator);
   });
 }
+
+
 
 function appendNumber(number) {
   const displayValue = document.getElementById("display").value;
   updateDisplay(displayValue === "0" ? number : displayValue + number);
 }
 
+function toggleSign() {
+  const displayValue = document.getElementById("display").value;
+  if (displayValue.charAt(0) === '-') {
+    updateDisplay(displayValue.substring(1));
+  } else {
+    updateDisplay('-' + displayValue);
+  }
+}
+
 function appendOperator(operator) {
   const displayValue = document.getElementById("display").value;
-  if (operator === "±") {
-    updateDisplay(
-      displayValue.startsWith("-") ? displayValue.slice(1) : "-" + displayValue
-    );
+  if (displayValue !== "" && !isNaN(displayValue.slice(-1))) {
+    updateDisplay(displayValue + operator);
+  } else if (operator === "±") {
+    toggleSign();
   } else if (operator === "%") {
     updateDisplay((parseFloat(displayValue) / 100).toString());
-  } else {
-    if (displayValue !== "" && !isNaN(displayValue.slice(-1))) {
-      updateDisplay(displayValue + operator);
-    }
   }
 }
 
@@ -53,19 +72,25 @@ function clearDisplay() {
 }
 
 function calculate() {
-  try {
-    const displayValue = document.getElementById("display").value;
-    const result = eval(
-      displayValue
-        .replaceAll("×", "*")
-        .replaceAll("÷", "/")
-        .replaceAll("−", "-")
-        .replaceAll("+", "+")
-    );
-    updateDisplay(result);
-    addToHistory(`${displayValue} = ${result}`);
-  } catch {
-    updateDisplay("Error");
+  const displayValue = document.getElementById("display").value;
+
+  console.log(displayValue)
+  if (/[+-×÷\/]/.test(displayValue)) {
+    try {
+      const result = eval(
+        displayValue
+          .replaceAll("×", "*")
+          .replaceAll("÷", "/")
+          .replaceAll("−", "-") 
+          .replaceAll("+", "+")
+      );
+      if (result !== undefined) {
+        updateDisplay(result);
+        addToHistory(`${displayValue} = ${result}`);
+      }
+    } catch {
+      updateDisplay("Error");
+    }
   }
 }
 
@@ -95,7 +120,6 @@ function deleteAllHistory() {
 document.addEventListener("keydown", function (event) {
   const key = event.key;
   if (!isNaN(key)) {
-    // if the key is a number
     appendNumber(key);
   } else if (key === "+" || key === "-" || key === "*" || key === "/") {
     const operatorMap = { "+": "+", "-": "−", "*": "×", "/": "÷" };
@@ -108,7 +132,8 @@ document.addEventListener("keydown", function (event) {
   } else if (key === "Escape") {
     clearDisplay();
   } else if (key === "%") {
-    appendOperator("%");
+    appendOpe
+    rator("%");
   }
 });
 
